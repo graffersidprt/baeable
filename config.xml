@@ -1,0 +1,15 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<configuration>
+	<config category="server">
+		<serverUrl>http://localhost/miricamdone/baeablehtmlpack/</serverUrl>
+		<performerUniqueId>6ncvh5z5</performerUniqueId>
+		<performerUniqueName>baeablemain</performerUniqueName>
+		<performerUniqueHost>6ncvh5z5</performerUniqueHost>
+		<wordpressSiteUrl></wordpressSiteUrl>
+		<!-- DO NOT EDIT ANYTHING BELOW THIS LINE -->
+		<miricamServerUrl>http://localhost:7002/</miricamServerUrl>
+		<performerUniqueChat>yes</performerUniqueChat>
+		<performerNotificationSoundPath>notifications/notification-sound.mp3</performerNotificationSoundPath>
+		<performerOfferTipSoundPath>notifications/offer-tip.mp3</performerOfferTipSoundPath>
+	</config>
+</configuration>

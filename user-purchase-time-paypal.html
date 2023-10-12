@@ -1,0 +1,217 @@
+<!DOCTYPE HTML>
+<html>
+
+<head>
+<title>User Purchase | Miricam</title>
+
+<meta charset="utf-8" />
+<meta http-equiv="window-target" content="_top">
+<meta name="viewport" content="width=device-width, initial-scale=1"/>
+<meta http-equiv="Cache-Control" content="no-cache, no-store, must-revalidate" />
+<meta http-equiv="Pragma" content="no-cache" />
+<meta http-equiv="Expires" content="0" />
+
+<link rel="shortcut icon" href="images/favicon.ico" type="image/x-icon" />
+<link rel="stylesheet" href="css/bootstrap.min.css" />
+<link rel="stylesheet" href="css/gijgo.min.css" />
+<link rel="stylesheet" href="css/style.css" />
+<link rel='stylesheet' id='redux-google-fonts-socialize-css'  href='https://fonts.googleapis.com/css?family=Roboto%3A300%2C400%2C600%2C500%7CRoboto+Slab%3A300&#038;subset=latin&#038;ver=5.2.1' type='text/css' media='all' />
+</head>
+
+<body class="landing" onload="getCustomerFullDetails(); getCountriesList(); checkCookie('rememberCustomerCardNumber'); checkCookie('rememberCustomerCardMonth'); checkCookie('rememberCustomerCardYear'); checkCookie('rememberCustomerCardCVV'); checkCookie('rememberFirstName'); checkCookie('rememberLastName'); checkCookie('rememberEmail'); checkCookie('rememberStreet'); checkCookie('rememberCity');  checkCookie('rememberCountry'); checkCookie('rememberState'); checkCookie('rememberZip'); checkCookie('rememberAmount');">
+
+<div id="page-wrapper">
+	<header id="header" class="alt">
+		<div class="col-md-2">
+		<a href="../home" style="border:0;" class="logoImg">
+			<img src="images/mLogo.png" alt="" border="0">
+		</a>
+		</div>
+		<div class="col-md-10">
+		<nav id="nav">
+			<ul>
+				<li><a href="user-dashboard.html">Dashboard</a></li>
+				<li><a href="performers-list.html">Performers List</a></li>
+				<li><a href="subscription-list.html">Subscription List</a></li>
+				<li><a href="javascript:void(0);" onclick="logout()">Logout</a></li>
+				<li id="customertotalamount_li"><a href="javascript:void(0);">Account Balance : $<span id="customerTotalAmount"></span></a></li>
+			</ul>
+		</nav>
+		</div>
+	</header>
+
+	<!-- Main -->
+	<section id="main" class="container-fluid mainbodypanel">
+		<section class="box special">
+			<div class="row">
+				<div class="col-xs-12">
+					<div class="marginTop">
+						<div class="panel panel-default">
+						<div class="panel-body">
+							<h1>Make A Payment</h1>
+							<p>Please complete the form below. Your payment will be handled via my trusted payment processor, Netbilling.</p>
+							<form method="post" action="https://secure.netbilling.com/gw/native/interactive2.2" name="customerPurchaseTimeForm" id="customerPurchaseTimeForm">
+								<div class="form-horizontal signUpFrm">
+										<div class="form-group col-md-6">
+											<label class="col-md-4 control-label" for="firstName">First Name</label>
+											<div class="col-md-8">
+												<input id="firstName" name="Ecom_BillTo_Postal_Name_First" type="text" placeholder="First Name" class="form-control" maxlength="50">
+											</div>
+										</div>
+
+										<div class="form-group col-md-6">
+											<label class="col-md-4 control-label" for="lastName">Last Name</label>
+											<div class="col-md-8">
+												<input id="lastName" name="Ecom_BillTo_Postal_Name_Last" type="text" placeholder="Last Name" class="form-control" maxlength="50">
+											</div>
+										</div>
+
+										<div class="form-group col-md-6">
+											<label class="col-md-4 control-label" for="email">Email</label>
+											<div class="col-md-8">
+												<input id="email" name="Ecom_BillTo_Online_Email" type="email" placeholder="Email" class="form-control" maxlength="100">
+											</div>
+										</div>
+
+										<div class="form-group col-md-6">
+											<label class="col-md-4 control-label" for="street">Street Address</label>
+											<div class="col-md-8">
+												<input id="street" name="Ecom_BillTo_Postal_Street_Line1" type="text" placeholder="Street Address" class="form-control" maxlength="150">
+											</div>
+										</div>
+
+										<div class="form-group col-md-6">
+											<label class="col-md-4 control-label" for="city">City</label>
+											<div class="col-md-8">
+												<input id="city" name="Ecom_BillTo_Postal_City" type="text" placeholder="City" class="form-control" maxlength="50">
+											</div>
+										</div>
+
+										<div class="form-group col-md-6">
+											<label class="col-md-4 control-label" for="state">State / Province</label>
+											<div class="col-md-8">
+												<select id="state" name="Ecom_BillTo_Postal_StateProv" class="form-control">
+													<option value="">Select State</option>
+												</select>
+											</div>
+										</div>
+
+										<div class="clearfix"></div>
+										<div class="form-group col-md-6">
+											<label class="col-md-4 control-label" for="country">Country</label>
+											<div class="col-md-8">
+												<select id="country" name="Ecom_BillTo_Postal_CountryCode" class="form-control" onchange="getStatesList(this);">
+													<option value="">Select Country</option>
+												</select>
+											</div>
+										</div>
+
+										<div class="form-group col-md-6">
+											<label class="col-md-4 control-label" for="zip">Zipcode</label>
+											<div class="col-md-8">
+												<input id="zip" name="Ecom_BillTo_Postal_PostalCode" type="text" placeholder="Zipcode" class="form-control" maxlength="8">
+											</div>
+										</div>
+
+										<div class="clearfix"></div>
+										
+										<div class="form-group col-md-6">
+											<label class="col-md-4 control-label" for="cardAmount">Amount</label>
+											<div class="col-md-8">
+												<input id="cardAmount" name="Ecom_Cost_Total" type="text" placeholder="Amount" class="form-control" maxlength="8" autocomplete='off'>
+											</div>
+										</div>
+										<div class="form-group col-md-6">
+											<label class="col-md-4 control-label" for="rememberCardDetails">Remember Card Details?</label>
+											<div class="col-md-2">
+												<input class="form-control" name="rememberCardDetails" id="rememberCardDetails" type="checkbox" value="1" onclick="rememberCardInfo()">
+											</div>
+										</div>
+								</div>
+
+								<div class="col-md-12 align-center">
+									<br/><br/>
+									<button type="button" class="btn btn-sm btn-default btnNewSign" onclick="getCardNumber()">Make Payment</button>
+								</div>
+							</form>
+
+							<form action="https://www.sandbox.paypal.com/cgi-bin/webscr" method="get" id="paypalForm">
+								<!-- Identify your business so that you can collect the payments. -->
+								<!-- votiveyogesh@gmail.com -->
+								<input type="hidden" name="business" value="sb-92o5r345072@business.example.com">
+
+								<!-- Specify a Buy Now button. -->
+								<input type="hidden" name="cmd" value="_xclick">
+
+								<!-- Specify a Buy Now button. -->
+								<input type="hidden" name="custom" value="10">
+
+								<!-- Specify details about the item that buyers will purchase. -->
+								<input type="hidden" name="item_name" value="Time Purchasing">
+								<input type="hidden" name="item_number" value="1">
+								<input type="hidden" name="currency_code" value="USD">
+
+								<input type="hidden" name="first_name" id="first_name" value="">
+								<input type="hidden" name="last_name" id="last_name" value="">
+								<input type="hidden" name="address1" id="address1" value="">
+								<input type="hidden" name="city" id="city" value="">
+								<input type="hidden" name="state" id="state" value="">
+								<input type="hidden" name="zip" id="zip" value="">
+								<input type="hidden" name="country" id="country" value="">
+								<input type="hidden" name="email" id="email" value="">
+								<input type="hidden" name="amount" id="amount" value="">
+
+
+
+								<!-- Specify URLs -->
+								<input type='hidden' name='cancel_return' value='http://localhost/miricamdone/miricampaypal/reply.php'>
+								<input type='hidden' name='return' value='http://localhost/miricamdone/miricampaypal/reply.php'>
+								<!-- <input type='hidden' name='notify_url' value='http://localhost/miricamdone/miricampaypal/reply.php'> -->
+
+								<!-- Display the payment button. -->
+								<!-- <input type="submit" name="submit" value="PayNow"> -->
+								<input type="image" name="submit" border="0"
+								src="https://www.paypalobjects.com/en_US/i/btn/btn_buynow_LG.gif" alt="PayPal - The safer, easier way to pay online">
+								<img alt="" border="0" width="1" height="1" src="https://www.paypalobjects.com/en_US/i/scr/pixel.gif" >
+							</form>
+
+
+							<div class="col-md-12 align-center">
+								<img src = "images/paymentformbc.gif"><br/><br/>
+								<p>Questions or problems? Please <a href="http://www.2much.net/contact.php" target="_blank">Contact Us</a></p>
+							</div>
+						</div>
+						</div>
+					</div>
+				</div>
+			</div>
+		</section>
+	</section>
+
+	<!-- Footer -->
+	<footer id="footer" class="container-fluid">
+		<section class="box special">
+			<img src="images/secure-netbilling.gif" alt="Secure NETBilling Image"/>
+			<p>
+				<font size="4"><a href="https://www.miricam.net/" target="_blank"><font color = "#ccc">Miricam.com</font></a></font>
+			</p>
+		</section>
+	</footer>
+</div>
+
+<!-- Scripts -->
+<script src="js/jquery-3.3.1.min.js"></script>
+<script src="js/jquery-ui.min.js"></script>
+<script src="js/gijgo.min.js"></script>
+<script src="js/bootstrap/bootstrap.min.js"></script>
+
+<script src="js/jquery.validate.min.js"></script>
+<script src="js/jquery.form.min.js"></script>
+<script src="js/loadingoverlay.min.js"></script>
+<script src="js/sweetalert.min.js"></script>
+<script src="js/skel.min.js"></script>
+<script src="js/util.js"></script>
+<script src="js/main.js"></script>
+<script src="js/custom.js"></script>
+</body>
+</html>

@@ -1,0 +1,859 @@
+<!DOCTYPE HTML>
+<html>
+
+<head>
+<title>Performer Private Chat | Miricam</title>
+
+<meta charset="utf-8" />
+<meta http-equiv="window-target" content="_top">
+<meta name="viewport" content="width=device-width, initial-scale=1"/>
+<meta http-equiv="Cache-Control" content="no-cache, no-store, must-revalidate" />
+<meta http-equiv="Pragma" content="no-cache" />
+<meta http-equiv="Expires" content="0" />
+
+<link rel="shortcut icon" href="images/favicon.ico" type="image/x-icon" />
+<link rel="stylesheet" href="css/bootstrap.min.css" />
+<link rel="stylesheet" href="css/jquery-ui.css" />
+<link rel="stylesheet" href="css/timepicker.min.css" />
+<link rel="stylesheet" href="css/gijgo.min.css" />
+<link rel="stylesheet" href="css/font-awesome.min.css" />
+<link rel="stylesheet" href="css/style.css" />
+<link rel='stylesheet' id='redux-google-fonts-socialize-css'  href='https://fonts.googleapis.com/css?family=Roboto%3A300%2C400%2C600%2C500%7CRoboto+Slab%3A300&#038;subset=latin&#038;ver=5.2.1' type='text/css' media='all' />
+
+<script src="js/jquery-3.3.1.min.js"></script>
+<script src="js/wowza/jquery.cookie.js"></script>
+<script src="js/wowza/webrtc_private.js"></script>
+
+</head>
+
+<body class="landing" onload="getPerformerTimeSettings(); getPerformerSettings(); getPerformerFullDetails(); getPerformerShowtimeSettings();getPerformerProfileDetails(); getPerformerPrivateGallerySettings();">
+
+	<div id="page-wrapper">
+		<header id="header" class="alt">
+			<div class="col-md-2">
+				<a href="../home" style="border:0;" class="logoImg">
+					<img src="images/mLogo.png" alt="Logo Image" border="0">
+				</a>
+			</div>
+			<div class="col-md-10">
+				<nav id="nav">
+					<ul>
+						<li id="notification_li">
+							<a href="javascript:void(0)" class="icon" onclick="showNotificationsUL()">Notifications
+							<span class="notification-number" id="notification_number" ></span></a>
+						</li>
+						<li>
+							<a href="javascript:void(0)" class="icon fa-angle-down" onclick="showHideSubMenu();">Settings</a>
+							<ul id="subMenuUL" class="notifications_ul right300" style="margin:0;">
+								<li><a href="javascript:void(0);" onclick="openResetModal('performerPricingModal', 'performerTimeSettingsForm')">My Price</a></li>
+								<li><a href="javascript:void(0);" onclick="openResetModal('performerAccountSettingsModal', 'performerControlsForm')">Performer Details</a></li>
+								<li><a href="javascript:void(0);" onclick="openResetModal('performerPrivateGalleryModal', 'performerPrivateGalleryForm')">Private Gallery</a></li>
+								<li><a href="javascript:void(0);" onclick="openResetModal('performerProfileModal', 'performerProfileForm')">Profile</a></li>
+								<li><a href="javascript:void(0);" onclick="openResetModal('performerSetScheduleModal', 'performerSetScheduleModal')">Schedule</a></li>
+								<li><a href="javascript:void(0);" onclick="openResetModal('performerTopicModal', 'performerTopicForm')">Topic</a></li>
+							</ul>
+						</li>
+						<li><a href="javascript:void(0);" onclick="openResetModal('performerImagesUploadModal', 'performerImagesUploadModal')">Upload Images</a></li>
+						<li><a href="javascript:void(0);" onclick="logout()">Logout</a></li>
+					</ul>
+				</nav>
+			</div>
+		</header>
+
+		<!-- Main -->
+		<section id="main" class="container-fluid mainbodypanel">
+			<section class="box special">
+				<div class="clearfix"></div>
+
+				<!-- wowza related variables using in JS code-->
+				<input type="hidden" id="userAgent" name="userAgent" value="" />
+				<div class="div-section">
+					<table style="display: none;">
+						<tr>
+							<td><strong>SDP URL</strong></td>
+							<td>
+								<input type="hidden" id="sdpURL" size="50" value="wss://mirichat.com:4443/webrtc-session.json"/>
+							</td>
+						</tr>
+						<tr>
+							<td><strong>Application Name</strong></td>
+							<td>
+								<input type="hidden" id="applicationName" size="25" value="webrtc"/>
+							</td>
+						</tr>
+						<tr>
+							<td><strong>Stream Name</strong></td>
+							<td>
+								<input type="hidden" id="streamNamePrivate" size="25" value=""/>
+							</td>
+						</tr>
+						<tr>
+							<td><strong>Video Bitrate</strong></td>
+							<td>
+								<input type="hidden" id="videoBitrate" size="10" value="360"/>&nbsp;kbps
+							</td>
+						</tr>
+						<tr>
+							<td><strong>Audio Bitrate</strong></td>
+							<td>
+								<input type="hidden" id="audioBitrate" size="10" value="64"/>&nbsp;kbps
+							</td>
+						</tr>
+						<tr>
+							<td><strong>FrameRate(*)</strong></td>
+							<td>
+								<input type="hidden" id="videoFrameRate" size="10" value="29.97"/>&nbsp;kbps
+							</td>
+						</tr>
+						<tr>
+							<td><strong>Video Codec</strong></td>
+							<td>
+								<select name="videoChoice" id="videoChoice" style="display:none;">
+								<option value="42e01f" selected="selected">H264</option>
+								<option value="VP9">VP9</option>
+								</select>
+							</td>
+						</tr>
+						<tr>
+							<td><strong>Audio Codec</strong></td>
+							<td>
+								<select type="text" id="audioChoice" display="none;">
+								<option value="opus">Opus</option>
+								</select>
+							</td>
+						</tr>
+						<tr>
+							<td>
+								<font size="1">See readme for details on FrameRate compatibility
+							</td>
+						</tr>
+						<tr>
+							<td>&nbsp;</td>
+							<td></td></tr>
+					</table>
+				</div>
+				<div class="sdpDataTagClass hide">
+					<span id="sdpDataTag"></span>
+				</div>
+
+				<section class="chatbodyPanel">
+					<div class="leftSideVedio">
+						<div class="vedioSection">
+							<video id="localVideo" autoplay playsinline muted controls></video>
+						</div>
+					</div>
+					<div class="rightSideVedio">
+						<div class="userChatReview" id="chatroom">
+							<div class="userWriteTxt"><div id="feedback"></div></div>
+							<div class="userListPanel"></div>
+						</div>
+						<div class="chatTextarea" id="input_zone"> 
+							<input id="message" class="vertical-align" type="text" />
+							<button id="send_message" class="vertical-align" type="button">Send</button>
+					   </div>
+					</div>
+				</section>
+
+				<script type="text/javascript">
+					document.getElementById("userAgent").value = navigator.userAgent;
+					pageReady();
+				</script>
+
+				<section>
+					<div class="row chatRoomPanel col-container">
+						<div class="col-md-12 align-right" id="broadcastNowDiv">
+							<a href="javascript:void(0);" class="btn btn-sm btn-default boradcast_now hideClass" id="buttonGo" onClick="start();">Start Stream</a>
+						</div>
+					</div>
+				</section>
+				<!-- wowza related variables using in JS code -->
+				
+				<!-- topic div -->
+				<div class="saleTableData">
+					<div class="row">
+						<div class="col-xs-12 col-md-12" id="topic-div"></div>
+					</div>
+				</div>
+
+				<div class="col-md-12">
+					<div class="row btnChatCol">
+						<div id="end-private-chat" style="display:none;">
+							<a href="javascript:void(0);" onclick="leaveRoom()">
+							<div class="btnChat4">End Private Chat</div>
+							</a>
+						</div>
+
+						<div>
+		                    <div class="btnChat4" id="private-chat-timer" style="display:none; background-color: #aa0000;"></div>
+		                </div>
+					</div>
+				</div>
+				<div class="clearfix"></div>
+
+			</section>
+		</section>
+
+		<!-- Footer -->
+		<footer id="footer" class="container-fluid"> 
+			<section class="box special">
+			<p>
+				<font size="4"><a href="https://www.miricam.net/" target="_blank"><font color = "#ccc">Miricam.com</font></a></font>
+			</p>
+			</section>
+		</footer>
+	</div>
+
+<!-- Performer Pricing Modal -->
+<div class="modal fade" id="performerPricingModal" role="dialog" style="z-index:999999999">
+	<div class="modal-dialog loginPanelPopup">
+		<!-- Modal content-->
+		<div class="modal-content">
+			<!-- modal header -->
+			<div class="modal-header">
+				<button type="button" class="close" data-dismiss="modal">&times;</button>
+				<h3>Set Your Price</h3>
+				<h4 class="modal-title">Please indicate how much each session will cost your clients.</h4>
+			</div>
+			<!-- modal body -->
+			<div class="modal-body clearfix">
+				<div class="col-xs-12 col-md-12">
+					<div class="panel panel-default">
+						<div class="panel-body">
+							<div class="col-md-12">
+								<form method="post" action="/performerTimeSettings" name="performerTimeSettingsForm" id="performerTimeSettingsForm">
+									<div class="form-group">
+										<label class="col-md-6 control-label" style="font-size: 17px;font-weight: 700; letter-spacing:1.5px;">
+											How much do you want to charge your customers for private chat time, Per-Minute?
+										</label>
+										<div class="col-md-6">
+											<span style="float: left;margin: 10px 5px 0 0;font-weight: 700;">$</span>
+											<input type="text" class="form-control" id="perMinutePrice" name="perMinutePrice" placeholder="SET $ PRICE FOR PER MINS" maxlength="5" style="width: 80%;">
+										</div>
+									</div>
+									<div class="col-md-8 align-right">
+										</br></br></br></br></br>
+										<button type="submit" class="btn btn-sm btn-default btnNewSign">Save</button>
+									</div>
+								</form>
+							</div>
+						</div>
+					</div>
+				</div>
+			</div>
+		</div>
+	</div>
+</div>
+<!-- Performer Pricing Modal -->
+
+<!-- Performer Account Settings Modal -->
+<div class="modal fade" id="performerAccountSettingsModal" role="dialog" style="z-index:999999999">
+	<div class="modal-dialog loginPanelPopup width-700">
+		<!-- Modal content-->
+		<div class="modal-content">
+			<!-- modal header -->
+			<div class="modal-header">
+				<button type="button" class="close" data-dismiss="modal">&times;</button>
+				<h3 class="modal-title">Performer Details</h3>
+			</div>
+			<!-- modal body -->
+			<div class="modal-body clearfix">
+				<div class="panel panel-default no-border">
+					<div class="panel-body1">
+						<form method="post" action="/performerControls" name="performerControlsForm" id="performerControlsForm">
+							<div class="form-horizontal signUpFrm">
+
+								<div class="form-group col-md-11">
+									<h4>Contact :</h4>
+								</div>
+
+								<!-- name/username -->
+								<div class="form-group col-md-6">
+									<label class="col-md-4 control-label" for="name">Real Name <span class="class-pink">*</span></label>
+									<div class="col-md-8">
+										<input id="name" name="name" type="text" placeholder="Your Full Name" class="form-control" maxlength="50">
+									</div>
+								</div>
+								<div class="form-group col-md-6">
+									<label class="col-md-4 control-label" for="username">Username <span class="class-pink">*</span></label>
+									<div class="col-md-8">
+										<input id="username" name="username" type="text" placeholder="Username" class="form-control" maxlength="50">
+									</div>
+								</div>
+								<div class="clearfix"></div>
+
+								<!-- email/phone -->
+								<div class="form-group col-md-6">
+									<label class="col-md-4 control-label" for="email">Email <span class="class-pink">*</span></label>
+									<div class="col-md-8">
+										<input id="email" name="email" type="text" placeholder="Email" class="form-control" maxlength="100">
+									</div>
+								</div>
+								<div class="form-group col-md-6">
+									<label class="col-md-4 control-label" for="mobilePhone">Mobile Phone <span class="class-pink">*</span></label>
+									<div class="col-md-8">
+										<input id="mobilePhone" name="mobilePhone" type="text" placeholder="Mobile Phone #" class="form-control" maxlength="15">
+									</div>
+								</div>
+								<div class="clearfix"></div>
+
+								<!-- street/city -->
+								<div class="form-group col-md-6">
+									<label class="col-md-4 control-label" for="street">Street Address</label>
+									<div class="col-md-8">
+										<input id="street" name="address" type="text" placeholder="Street Address" class="form-control valid" maxlength="150" value="">
+									</div>
+								</div>
+								<div class="form-group col-md-6">
+									<label class="col-md-4 control-label" for="city">City</label>
+									<div class="col-md-8">
+										<input id="city" name="city" type="text" placeholder="City" class="form-control" maxlength="50" value="">
+									</div>
+								</div>
+
+								<!-- state/country -->
+								<div class="form-group col-md-6">
+									<label class="col-md-4 control-label" for="country">Country</label>
+									<div class="col-md-8">
+										<select id="country" name="country" class="form-control">
+											<option value="">Select Country</option>
+										</select>
+									</div>
+								</div>
+								<div class="form-group col-md-6">
+									<label class="col-md-4 control-label" for="state">State / Province</label>
+									<div class="col-md-8">
+										<input id="state" name="state" type="text" placeholder="State / Province" class="form-control" maxlength="50" value="">
+									</div>
+								</div>
+
+								<!-- zipcode/commission* -->
+								<div class="form-group col-md-6">
+									<label class="col-md-4 control-label" for="zip">Zipcode</label>
+									<div class="col-md-8">
+										<input id="zip" name="zip" type="text" placeholder="Zipcode" class="form-control" maxlength="8" value="">
+									</div>
+								</div>
+								<div class="form-group col-md-6">
+									<label class="col-md-4 control-label" for="performer_commision">Commission %</label>
+									<div class="col-md-8">
+										<input id="performerCommission" name="performerCommission" type="text" placeholder="Performer Commission" class="form-control valid" maxlength="10" value="" disabled="disabled">
+									</div>
+								</div>
+
+								<div class="form-group col-md-6">
+									<label class="col-md-4 control-label" for="socialInsTaxId">Social Ins # / Fed Tax ID</label>
+									<div class="col-md-8">
+										<input id="socialInsTaxId" name="socialInsTaxId" type="text" placeholder="Social Ins # / Fed Tax ID (US Residents only)" class="form-control" maxlength="20">
+									</div>
+								</div>
+								<div class="form-group col-md-6">
+									<label class="col-md-4 control-label" for="instagramURL">Company Name</label>
+									<div class="col-md-8">
+										<input id="companyName" name="companyName" type="text" placeholder="Company Name" class="form-control" maxlength="250">
+									</div>
+								</div>
+								<div class="clearfix"></div>
+
+								<!-- twitter/instagram* -->
+								<div class="form-group col-md-6">
+									<label class="col-md-4 control-label" for="twitterURL">Twitter URL</label>
+									<div class="col-md-8">
+										<input id="twitterURL" name="twitterURL" type="text" placeholder="Twitter URL" class="form-control" maxlength="100">
+									</div>
+								</div>
+								<div class="form-group col-md-6">
+									<label class="col-md-4 control-label" for="instagramURL">Instagram URL</label>
+									<div class="col-md-8">
+										<input id="instagramURL" name="instagramURL" type="text" placeholder="Instagram URL" class="form-control" maxlength="100">
+									</div>
+								</div>
+
+								<div class="form-group col-md-11">
+									<h4>Bank :</h4>
+								</div>
+
+								<!-- bankname/address -->
+								<div class="form-group col-md-6">
+									<label class="col-md-4 control-label" for="bankName">Bank</label>
+									<div class="col-md-8">
+										<input id="bankName" name="bankName" type="text" placeholder="The Name Of Your Bank" class="form-control" maxlength="50">
+									</div>
+								</div>
+								<div class="form-group col-md-6">
+									<label class="col-md-4 control-label" for="bankAddress">Bank Address</label>
+									<div class="col-md-8">
+										<textarea id="bankAddress" name="bankAddress" placeholder="The Address Of Your Bank" class="form-control" maxlength="200"></textarea>
+									</div>
+								</div>
+
+								<!-- iban/code -->
+								<div class="form-group col-md-6">
+									<label class="col-md-4 control-label" for="IBAN">IBAN #</label>
+									<div class="col-md-8">
+										<input id="IBAN" name="IBAN" type="text" placeholder="IBAN # Or Bank Account Number" class="form-control" maxlength="15">
+									</div>
+								</div>
+								<div class="form-group col-md-6">
+									<label class="col-md-4 control-label" for="bankCode">Code</label>
+									<div class="col-md-8">
+										<input id="bankCode" name="bankCode" type="text" placeholder="Bank Code" class="form-control" maxlength="6">
+									</div>
+								</div>
+
+								<!-- swift/routing -->
+								<div class="form-group col-md-6">
+									<label class="col-md-4 control-label" for="swiftCode">Swift#</label>
+									<div class="col-md-8">
+										<input id="swiftCode" name="swiftCode" type="text" placeholder="Swift Code" class="form-control" maxlength="6">
+									</div>
+								</div>
+								<div class="form-group col-md-6">
+									<label class="col-md-4 control-label" for="routingNumber">ABA#</label>
+									<div class="col-md-8">
+										<input id="routingNumber" name="routingNumber" type="text" placeholder="ABA Routing Number" class="form-control" maxlength="10">
+									</div>
+								</div>
+
+								<!-- special/institution -->
+								<div class="form-group col-md-6">
+									<label class="col-md-4 control-label" for="specialInstructions">Special Instructions (Such As CO#)</label>
+									<div class="col-md-8">
+										<input id="specialInstructions" name="specialInstructions" type="text" placeholder="Special Instructions (Such As CO#)" class="form-control" maxlength="50">
+									</div>
+								</div>
+								<div class="form-group col-md-6">
+									<label class="col-md-4 control-label" for="institution">Institution#</label>
+									<div class="col-md-8">
+										<input id="institution" name="institution" type="text" placeholder="Institution Number" class="form-control" maxlength="50">
+									</div>
+								</div>
+								<div class="clearfix"></div>
+
+								<!-- transit/BTC -->
+								<div class="form-group col-md-6">
+									<label class="col-md-4 control-label" for="transit">Transit#</label>
+									<div class="col-md-8">
+										<input id="transit" name="transit" type="text" placeholder="Transit Number" class="form-control" maxlength="50">
+									</div>
+								</div>
+								<div class="form-group col-md-6">
+									<label class="col-md-4 control-label" for="BTC">BTC#</label>
+									<div class="col-md-8">
+										<input id="BTC" name="BTC" type="text" placeholder="BTC" class="form-control" maxlength="50">
+									</div>
+								</div>
+
+								<!-- paypal/paxum -->
+								<div class="form-group col-md-6">
+									<label class="col-md-4 control-label" for="paypalEmail">Paypal</label>
+									<div class="col-md-8">
+										<input id="paypalEmail" name="paypalEmail" type="text" placeholder="Paypal Email Address" class="form-control" maxlength="100">
+									</div>
+								</div>
+								<div class="form-group col-md-6">
+									<label class="col-md-4 control-label" for="paxumEmail">Paxum</label>
+									<div class="col-md-8">
+										<input id="paxumEmail" name="paxumEmail" type="text" placeholder="Paxum Email / Account" class="form-control" maxlength="100">
+									</div>
+								</div>
+								
+							</div>
+							<div class="col-md-10 align-right">
+								<button type="submit" class="btn btn-sm btn-default btnNewSign">Save</button>
+							</div>
+						</form>
+					</div>
+				</div>
+			</div>
+		</div>
+	</div>
+</div>
+<!-- Performer Account Settings Modal -->
+
+<!-- Performer Topic Modal -->
+<div class="modal fade" id="performerTopicModal" role="dialog" style="z-index:999999999">
+	<div class="modal-dialog loginPanelPopup">
+		<!-- Modal content-->
+		<div class="modal-content">
+			<!-- modal header -->
+			<div class="modal-header">
+				<button type="button" class="close" data-dismiss="modal">&times;</button>
+				<h3>Add Topic</h3>
+				<h4 class="modal-title">Please enter topic for chat. This topic will show to all your users.</h4>
+			</div>
+			<!-- modal body -->
+			<div class="modal-body clearfix">
+				<div class="col-xs-12 col-md-12">
+					<div class="panel panel-default">
+						<div class="panel-body">
+							<div class="col-md-12">
+								<form method="post" action="/performerTopic" name="performerTopicForm" id="performerTopicForm">
+									<div class="form-horizontal signUpFrm">
+										<div class="form-group">
+											<label class="col-md-2 control-label" for="topic">Add Topic</label>
+											<div class="col-md-10">
+												<input type="text" class="form-control" id="topic" name="topic" placeholder="Add Topic For Chat" maxlength="250">
+											</div>
+										</div>
+									</div>
+									<div class="col-md-8 align-right">
+										<button type="submit" class="btn btn-sm btn-default btnNewSign">Update</button>
+									</div>
+								</form>
+							</div>
+						</div>
+					</div>
+				</div>
+			</div>
+		</div>
+	</div>
+</div>
+<!-- Performer Topic Modal -->
+
+<!-- Performer Tip Amount Modal -->
+<div class="modal fade" id="performerTipAmountModal" role="dialog" style="z-index:999999999">
+	<div class="modal-dialog loginPanelPopup">
+		<!-- Modal content-->
+		<div class="modal-content">
+			<!-- modal header -->
+			<div class="modal-header">
+				<h3>You've Been Tipped</h3>
+			</div>
+			<!-- modal body -->
+			<div class="modal-body clearfix">
+				<div class="col-xs-12 col-md-12">
+					<div class="panel panel-default">
+						<div class="panel-body">
+							<div class="col-md-12">
+								<h4 class="align-center middle-price">
+									<span id="tipAmount">$100.00</span>!
+								</h4>
+								<!-- <div class="tipTimeDiv"><span id="tipTimeText"></span></div> -->
+								<div class="col-md-9 align-right">
+									<button type="button" data-dismiss="modal" class="btn btn-sm btn-default btnNewSign">Continue</button>
+								</div>
+							</div>
+						</div>
+					</div>
+				</div>
+			</div>
+		</div>
+	</div>
+</div>
+<!-- Performer Tip Amount Modal -->
+
+<!-- Performer's Customer Purchase Modal -->
+<div class="modal fade" id="performerCustomerPurchaseModal" role="dialog" style="z-index:999999999">
+	<div class="modal-dialog loginPanelPopup">
+		<!-- Modal content-->
+		<div class="modal-content">
+			<!-- modal header -->
+			<div class="modal-header">
+				<h3>You Have A <span style="color:yellow;">Sale</span></h3>
+			</div>
+			<!-- modal body -->
+			<div class="modal-body clearfix">
+				<div class="col-xs-12 col-md-12">
+					<div class="panel panel-default">
+						<div class="panel-body">
+							<div class="col-md-12">
+								<h4 class="align-center middle-price">
+									<span id="purchaseAmount">$0.00</span>!
+								</h4>
+								<div class="commissionDiv">(<span id="commissionAmount">$0.00</span> has been placed into your account)</div>
+								<p>Congratulations!</p>
+								<div class="col-md-9 align-right">
+									<button type="button" data-dismiss="modal" class="btn btn-sm btn-default btnNewSign">Continue</button>
+								</div>
+							</div>
+						</div>
+					</div>
+				</div>
+			</div>
+		</div>
+	</div>
+</div>
+<!-- Performer's Customer Purchase Modal -->
+
+<!-- Performer Images Upload Modal -->
+<div class="modal fade" id="performerImagesUploadModal" role="dialog" style="z-index:999999999">
+	<div class="modal-dialog loginPanelPopup width-700">
+		<!-- Modal content-->
+		<div class="modal-content">
+			<!-- modal header -->
+			<div class="modal-header">
+				<button type="button" class="close" data-dismiss="modal">&times;</button>
+				<h3 class="modal-title">Upload Images</h3>
+			</div>
+			<!-- modal body -->
+			<div class="modal-body clearfix">
+				<div class="panel panel-default no-border">
+					<div class="panel-body1">
+						<div class="form-horizontal signUpFrm">
+
+							<div class="form-group col-md-11">
+								<h4>Avatar Image :</h4>
+							</div>
+
+							<!--profile image -->
+							<form method="post" action="/performerProfileImageSubmit" name="performerProfileImageForm" id="performerProfileImageForm" enctype="multipart/form-data">
+								<div class="form-group col-md-8">
+									<label class="col-md-4 control-label">Avatar Image <span class="class-pink">*</span></label>
+									<div class="col-md-8">
+										<input type="file" class="form-control" id="performer_images" name="performer_images" placeholder="Upload Avatar Image">
+									</div>
+								</div>
+								<div class="col-md-12">
+									<button type="submit" class="btn btn-sm btn-default btnNewSign" style="float:right;">Upload</button>
+								</div>
+							</form>
+
+							<div class="form-group col-md-11">
+								<h4>Photo ID Image :</h4>
+							</div>
+
+							<!-- photoId image -->
+							<form method="post" action="/performerPhotoIdImageSubmit" name="performerPhotoIdImageForm" id="performerPhotoIdImageForm" enctype="multipart/form-data">
+								<div class="form-group col-md-8">
+									<label class="col-md-4 control-label">Photo ID Image <span class="class-pink">*</span></label>
+									<div class="col-md-8">
+										<input type="file" class="form-control" id="photoIdImage" name="performer_images" placeholder="Upload PhotoID Image">
+									</div>
+								</div>
+								<div class="col-md-12">
+									<button type="submit" class="btn btn-sm btn-default btnNewSign" style="float:right;">Upload</button>
+								</div>
+							</form>
+
+							<div class="form-group col-md-11">
+								<h4>Gallery Images :</h4>
+							</div>
+
+							<!-- gallery images -->
+							<form method="post" action="/performerGalleryImageSubmit" name="performerGalleryImageForm" id="performerGalleryImageForm" enctype="multipart/form-data">
+								<div class="form-group col-md-8">
+									<label class="col-md-4 control-label">Gallery Images <span class="class-pink">*</span></label>
+									<div class="col-md-8">
+										<input type="file" class="form-control" id="performer_images" name="performer_images" placeholder="Upload Gallery Images" multiple="true">
+									</div>
+								</div>
+								<div class="col-md-12">
+									<button type="submit" class="btn btn-sm btn-default btnNewSign" style="float:right;">Upload</button>
+								</div>
+							</form>
+						</div>
+					</div>
+				</div>
+			</div>
+		</div>
+	</div>
+</div>
+<!-- Performer Images Upload Modal -->
+
+<!-- Performer Set Schedule Modal -->
+<div class="modal fade" id="performerSetScheduleModal" role="dialog" style="z-index:1">
+	<div class="modal-dialog loginPanelPopup">
+		<!-- Modal content-->
+		<div class="modal-content">
+			<!-- modal header -->
+			<div class="modal-header">
+				<button type="button" class="close" data-dismiss="modal">&times;</button>
+				<h3 class="modal-title">Set Schedule</h3>
+			</div>
+			<!-- modal body -->
+			<div class="modal-body clearfix">
+				<div class="panel panel-default no-border">
+					<div class="panel-body1">
+						<form method="post" action="/performerScheduleSubmit" name="performerScheduleForm" id="performerScheduleForm">
+							<div class="form-horizontal signUpFrm">
+
+								<!-- timezone/date -->
+								<div class="form-group col-md-12">
+									<label class="col-md-3 control-label" for="name">Select Timezone <span class="class-pink">*</span></label>
+									<div class="col-md-9">
+										<select id="timezone" name="timezone" class="form-control">
+											<option value="">Select Timezone</option>
+										</select>
+									</div>
+								</div>
+								<div class="form-group col-md-12">
+									<label class="col-md-3 control-label" for="username">Show Date <span class="class-pink">*</span></label>
+									<div class="col-md-9">
+										<input type="text" class="form-control" id="showDatePicker" name="showDatePicker" placeholder="Show Date" maxlength="20" style="border-radius: 6px; width: 70%; margin-right: 5px;" readonly="readonly">
+									</div>
+								</div>
+								<div class="clearfix"></div>
+
+								<!-- start/end time -->
+								<div class="form-group col-md-12">
+									<label class="col-md-3 control-label" for="email">Show Start Time <span class="class-pink">*</span></label>
+									<div class="col-md-9">
+										<input type="text" class="form-control" id="showStartTime" name="showStartTime" placeholder="Show Start Time" maxlength="20">
+									</div>
+								</div>
+								<div class="form-group col-md-12">
+									<label class="col-md-3 control-label" for="mobilePhone">Show End Time <span class="class-pink">*</span></label>
+									<div class="col-md-9">
+										<input type="text" class="form-control" id="showEndTime" name="showEndTime" placeholder="Show End Time" maxlength="20">
+									</div>
+								</div>
+								<div class="clearfix"></div>
+							</div>
+							<div class="col-md-12 align-right">
+								<button type="submit" class="btn btn-sm btn-default btnNewSign">Save</button>
+							</div>
+						</form>
+					</div>
+				</div>
+			</div>
+		</div>
+	</div>
+</div>
+
+<!-- Performer Profile Modal -->
+<div class="modal fade" id="performerProfileModal" role="dialog" style="z-index:1">
+	<div class="modal-dialog loginPanelPopup">
+		<!-- Modal content-->
+		<div class="modal-content">
+			<!-- modal header -->
+			<div class="modal-header">
+				<button type="button" class="close" data-dismiss="modal">&times;</button>
+				<h3 class="modal-title">Set Profile</h3>
+			</div>
+			<!-- modal body -->
+			<div class="modal-body clearfix">
+				<div class="panel panel-default no-border">
+					<div class="panel-body1">
+						<form method="post" action="/performerProfileSubmit" name="performerProfileForm" id="performerProfileForm">
+							<div class="form-horizontal signUpFrm">
+
+								<div class="form-group col-md-12">
+									<label class="col-md-3 control-label" for="name">Hair Color <span class="class-pink">*</span></label>
+									<div class="col-md-9">
+										<input id="hairColor" name="hairColor" type="text" placeholder="Hair Color" class="form-control" maxlength="50">
+									</div>
+								</div>
+								<div class="form-group col-md-12">
+									<label class="col-md-3 control-label" for="username">Eye Color <span class="class-pink">*</span></label>
+									<div class="col-md-9">
+										<input id="eyeColor" name="eyeColor" type="text" placeholder="Eye Color" class="form-control" maxlength="50">
+									</div>
+								</div>
+								<div class="clearfix"></div>
+								
+								<div class="form-group col-md-12">
+									<label class="col-md-3 control-label" for="email">Age <span class="class-pink">*</span></label>
+									<div class="col-md-9">
+										<input id="age" name="age" type="text" placeholder="Age" class="form-control" maxlength="50">
+									</div>
+								</div>
+
+								<div class="clearfix"></div>
+								
+								<div class="form-group col-md-12">
+									<label class="col-md-3 control-label" for="mobilePhone">Sex <span class="class-pink">*</span></label>
+									<div class="col-md-9">
+										<input id="sex" name="sex" type="text" placeholder="Sex" class="form-control" maxlength="50">
+									</div>
+								</div>
+								<div class="form-group col-md-12">
+									<label class="col-md-3 control-label" for="mobilePhone">Ethinicity<span class="class-pink">*</span></label>
+									<div class="col-md-9">
+										<input id="ethinicity" name="ethinicity" type="text" placeholder="Ethinicity" class="form-control" maxlength="50">
+									</div>
+								</div>
+								<div class="form-group col-md-12">
+									<label class="col-md-3 control-label" for="mobilePhone">Body Type<span class="class-pink">*</span></label>
+									<div class="col-md-9">
+										<input id="bodyType" name="bodyType" type="text" placeholder="Body Type" class="form-control" maxlength="50">
+									</div>
+								</div>
+								<div class="clearfix"></div>
+							</div>
+							<div class="col-md-12 align-right">
+								<button type="submit" class="btn btn-sm btn-default btnNewSign">Save</button>
+							</div>
+						</form>
+					</div>
+				</div>
+			</div>
+		</div>
+	</div>
+</div>
+<!-- Performer Profile Modal -->
+
+<!-- Performer Private Gallery Modal -->
+<div class="modal fade" id="performerPrivateGalleryModal" role="dialog" style="z-index:999999999">
+	<div class="modal-dialog loginPanelPopup">
+		<!-- Modal content-->
+		<div class="modal-content">
+			<!-- modal header -->
+			<div class="modal-header">
+				<button type="button" class="close" data-dismiss="modal">&times;</button>
+				<h3>Set Price For Private Gallery</h3>
+				<h4 class="modal-title">Please indicate how much cost your clients for private gallery.</h4>
+			</div>
+			<!-- modal body -->
+			<div class="modal-body clearfix">
+				<div class="col-xs-12 col-md-12">
+					<div class="panel panel-default">
+						<div class="panel-body">
+							<div class="col-md-12">
+								<form method="post" action="/performerPrivateGallerySettings" name="performerPrivateGalleryForm" id="performerPrivateGalleryForm">
+									<div class="form-group">
+										<label class="col-md-6 control-label" style="font-size: 17px;font-weight: 700; letter-spacing:1.5px;">
+											How much do you want to charge your customers for private gallery contents?
+										</label>
+										<div class="col-md-6">
+											<span style="float: left;margin: 10px 5px 0 0;font-weight: 700;">$</span>
+											<input type="text" class="form-control" id="privateGalleryPrice" name="privateGalleryPrice" placeholder="SET $ PRICE FOR PRIVATE GALLERY" maxlength="5" style="width: 80%;">
+										</div>
+									</div>
+									<div class="col-md-8 align-right">
+										</br></br></br></br></br>
+										<button type="submit" class="btn btn-sm btn-default btnNewSign">Save</button>
+									</div>
+								</form>
+							</div>
+						</div>
+					</div>
+				</div>
+			</div>
+		</div>
+	</div>
+</div>
+<!-- Performer Private Gallery Modal -->
+
+<!-- Scripts -->
+<script src="js/jquery-ui.min.js"></script>
+<script src="js/gijgo.min.js"></script>
+<script src="js/jquery.timepicker.min.js"></script>
+
+<script src="js/moment.min.js"></script>
+<script src="js/moment-timezone.min.js"></script>
+<script src="js/moment-timezone-with-data.min.js"></script>
+
+<script src="js/bootstrap/bootstrap.min.js"></script>
+<script src="js/jquery.validate.min.js"></script>
+<script src="js/additional/extension.js"></script>
+<script src="js/jquery.form.min.js"></script>
+<script src="js/loadingoverlay.min.js"></script>
+<script src="js/sweetalert.min.js"></script>
+<script src="js/skel.min.js"></script>
+<script src="js/util.js"></script>
+<script src="js/countdownTimer.js"></script>
+<script src="js/jquery.playSound.js"></script>
+
+<script type="text/javascript">
+	$(document).ready(function()
+	{
+		//start();
+	});
+</script>
+
+<script src="js/socket.io.js"></script>
+<script src="js/private-chat.js"></script>
+<script src="js/main.js"></script>
+<script src="js/custom.js"></script>
+</body>
+</html>

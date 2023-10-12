@@ -1,0 +1,168 @@
+<!DOCTYPE HTML>
+<html>
+
+<head>
+<title>Sub Performer Signup | Miricam</title>
+
+<meta charset="utf-8" />
+<meta http-equiv="window-target" content="_top">
+<meta name="viewport" content="width=device-width, initial-scale=1"/>
+<meta http-equiv="Cache-Control" content="no-cache, no-store, must-revalidate" />
+<meta http-equiv="Pragma" content="no-cache" />
+<meta http-equiv="Expires" content="0" />
+
+<link rel="shortcut icon" href="images/favicon.ico" type="image/x-icon" />
+<link rel="stylesheet" href="css/bootstrap.min.css" />
+<link rel="stylesheet" href="css/gijgo.min.css" />
+<link rel="stylesheet" href="css/font-awesome.min.css" />
+<link rel="stylesheet" href="css/style.css" />
+<link rel='stylesheet' id='redux-google-fonts-socialize-css'  href='https://fonts.googleapis.com/css?family=Roboto%3A300%2C400%2C600%2C500%7CRoboto+Slab%3A300&#038;subset=latin&#038;ver=5.2.1' type='text/css' media='all' />
+</head>
+
+<body class="landing" onload="setWordpressSiteUrl();">
+
+<div id="page-wrapper">
+	<header id="header" class="alt">
+		<div class="col-md-2">
+		<a href="../home" style="border:0;" class="logoImg">
+			<img src="images/mLogo.png" alt="" border="0">
+		</a>
+		</div>
+		<div class="col-md-10">
+		<nav id="nav">
+			<ul>
+				<li><a href="../home">Home</a></li>
+				<li>
+					<a href="javascript:void(0)" class="icon fa-angle-down" onclick="showHideSubMenu();">Login/Signup</a>
+					<ul id="subMenuUL" class="notifications_ul" style="margin:0;">
+						<li><a href="user-login.html">User Login</a></li>
+						<li><a href="user-signup.html">User Signup</a></li>
+						<li><a href="sub-performer-login.html">Performer Login</a></li>
+						<li><a href="sub-performer-signup.html">Performer Signup</a></li>
+					</ul>
+				</li>
+			</ul>
+		</nav>
+		</div>
+	</header>
+
+<!-- Main -->
+<section id="main" class="container-fluid mainbodypanel">
+	<section class="box special">
+		<div class="row">
+			<div class="col-xs-12">
+				<div class="leftLoginFrm">
+					<div class="panel panel-default">
+						<div class="panel-body">
+							<h3>Welcome to Baeable</h3>
+							<p>Join Baeable to discover all the ways you can monetize your talents on a platform that doesn't censor your beautiful body.  Baeable is a community that celebrates our differences and our sexuality.  Be you and be Baeable</p>
+							<h4><strong>Create Account</strong></h4>
+							<form method="post" action="/subPerformerSignupBaeable" name="subPerformerSignupForm" id="subPerformerSignupForm">
+								<div class="form-horizontal signUpFrm">
+									<div class="form-group">
+										<label class="col-md-4 control-label" for="name">Full Legal Name</label>
+										<div class="col-md-7">
+											<input id="name" name="name" type="text" placeholder="name" class="form-control" maxlength="50">
+										</div>
+									</div>
+									<div class="form-group">
+										<label class="col-md-4 control-label" for="email">Email Address</label>
+										<div class="col-md-7">
+											<input id="email" name="email" type="email" placeholder="Email" class="form-control" maxlength="100">
+										</div>
+									</div>
+									<div class="form-group">
+										<label class="col-md-4 control-label" for="username">Choice of Username</label>
+										<div class="col-md-7">
+											<input id="username" name="username" type="text" placeholder="Username" class="form-control" maxlength="50">
+										</div>
+									</div>
+									<div class="form-group">
+										<label class="col-md-4 control-label" for="password">Choice of Password</label>
+										<div class="col-md-7">
+											<input id="password" name="password" type="password" placeholder="Password" class="form-control" maxlength="20">
+										</div>
+									</div>
+									<h4><strong>Image</strong></h4>
+									<p>Please provide good quality image of yourself for Photo ID</p>
+									<div class="form-group">
+										<label class="col-md-4 control-label" for="password">Photo ID</label>
+										<div class="col-md-7">
+											<input type="file" class="form-control" id="performer_image1" name="performer_image1" placeholder="Upload Image">
+										</div>
+									</div>
+									<!--<div class="form-group">
+										<label class="col-md-4 control-label" for="password">Tell us about yourself</label>
+										<div class="col-md-7">
+											<textarea id="about" name="about" type="text" placeholder="" class="form-control" rows = "5" cols = "60"></textarea>
+										</div>
+									</div>
+									<br/>
+
+									<!--<h4><strong>Images</strong></h4>
+									<p>Please provide 2 good quality images of yourself + Photo ID</p>						
+									<div class="form-group">
+										<label class="col-md-4 control-label" for="password">Image 1 </label>
+										<div class="col-md-7">
+											<input type="file" class="form-control" id="performer_image1" name="performer_image1" placeholder="Upload Image">
+										</div>
+									</div>
+									<div class="form-group">
+										<label class="col-md-4 control-label" for="password">Image 2</label>
+										<div class="col-md-7">
+											<input type="file" class="form-control" id="performer_image2" name="performer_image2" placeholder="Upload Image">
+										</div>
+									</div>
+									<div class="form-group">
+										<label class="col-md-4 control-label" for="password">Photo ID </label>
+										<div class="col-md-7">
+											<input type="file" class="form-control" id="performer_photoId" name="performer_photoId" placeholder="Upload Photo ID">
+										</div>
+									</div>-->
+									<input type="hidden" id="wordpress_site_url" name="wordpress_site_url" value="">
+									<div class="form-group">
+										<div class="col-md-11">
+											<p>By clicking Submit below you are entering an application to become a webcam model for an adult website, declare that <strong>You are an adult at least 18 years of age</strong> agree to the <a href = "terms-of-services.html" target ="_blank">Terms and Conditions</a><br /><br />
+										</div>
+									</div>
+									<div class="form-group">
+										<div class="col-md-11">
+											<button type="submit" class="btn btn-sm btn-default btnNewSign">Submit</button>
+										</div>
+									</div>
+								</div>
+							</form>
+						</div>
+					</div>
+				</div>
+			</div>
+		</div>
+	</section>
+</section>
+
+	<!-- Footer -->
+	<footer id="footer" class="container-fluid"> 
+		<section class="box special">
+		<p>
+			<font size="4"><a href="https://www.miricam.net/" target="_blank"><font color = "#ccc">Miricam.com</font></a></font>
+		</p>
+		</section>
+	</footer>
+</div>
+
+<!-- Scripts -->
+<script src="js/jquery-3.3.1.min.js"></script>
+<script src="js/jquery-ui.min.js"></script>
+<script src="js/gijgo.min.js"></script>
+<script src="js/bootstrap/bootstrap.min.js"></script>
+
+<script src="js/jquery.validate.min.js"></script>
+<script src="js/jquery.form.min.js"></script>
+<script src="js/loadingoverlay.min.js"></script>
+<script src="js/sweetalert.min.js"></script>
+<script src="js/skel.min.js"></script>
+<script src="js/util.js"></script>
+<script src="js/main.js"></script>
+<script src="js/custom.js"></script>
+</body>
+</html>

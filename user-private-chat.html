@@ -1,0 +1,174 @@
+<!DOCTYPE HTML>
+<html>
+<head>
+<title>User Private Chat | Miricam</title>
+
+<meta charset="utf-8" />
+<meta http-equiv="window-target" content="_top">
+<meta name="viewport" content="width=device-width, initial-scale=1"/>
+<meta http-equiv="Cache-Control" content="no-cache, no-store, must-revalidate" />
+<meta http-equiv="Pragma" content="no-cache" />
+<meta http-equiv="Expires" content="0" />
+
+<link rel="shortcut icon" href="images/favicon.ico" type="image/x-icon" />
+<link rel="stylesheet" href="css/bootstrap.min.css" />
+<link rel="stylesheet" href="css/style.css" />
+<link rel='stylesheet' id='redux-google-fonts-socialize-css'  href='https://fonts.googleapis.com/css?family=Roboto%3A300%2C400%2C600%2C500%7CRoboto+Slab%3A300&#038;subset=latin&#038;ver=5.2.1' type='text/css' media='all' />
+
+<script src="js/jquery-3.3.1.min.js"></script>
+<script src="js/wowza/jquery.cookie.js"></script>
+<script src="js/wowza/webrtc_play_private.js"></script>
+
+</head>
+
+<body class="landing" onload="getCustomerFullDetailsFromChat();">
+
+<div id="page-wrapper">
+	<header id="header" class="alt">
+		<div class="col-md-2">
+			<a href="../home" style="border:0;" class="logoImg">
+				<img src="images/mLogo.png" alt="Logo Image" border="0">
+			</a>
+		</div>
+		<div class="col-md-10">
+			<nav id="nav">
+				<ul>
+					<li><a href="javascript:void(0);" onclick="goToDashboard('user')">Dashboard</a></li>
+					<li><a href="javascript:void(0);" onclick="logout()">Logout</a></li>
+					<li id="customertotalamount_li"><a href="javascript:void(0);">Account Balance : $<span id="customerTotalAmount"></span></a></li>
+				</ul>
+			</nav>
+		</div>
+	</header>
+
+	<!-- Main -->
+	<section id="main" class="container-fluid mainbodypanel">
+		<section class="box special">
+
+			<div class="div-section">
+				<table style="display: none;">
+					<tr>
+						<td><strong>SDP URL</strong></td>
+						<td>
+							<input type="hidden" id="sdpURL" size="50" value="wss://mirichat.com:4443/webrtc-session.json"/>
+						</td>
+					</tr>
+					<tr>
+						<td><strong>Application Name</strong></td>
+						<td>
+							<input type="hidden" id="applicationName" size="25" value="webrtc"/>
+						</td>
+					</tr>
+					<tr>
+						<td><strong>Stream Name</strong></td>
+						<td>
+							<input type="hidden" id="streamNamePrivate" size="25" value=""/>
+						</td>
+					</tr>
+					<tr>
+						<td>&nbsp;</td>
+						<td>&nbsp;</td>
+					</tr>
+				</table>
+			</div>
+			<div class="sdpDataTagClass hide">
+				<span id="sdpDataTag"></span>
+			</div>
+
+			<section class="chatbodyPanel">
+				<div class="leftSideVedio">
+					<div class="vedioSection">
+						<video id="remoteVideo" autoplay playsinline muted controls></video>
+					</div>
+				</div>
+				<div class="rightSideVedio">
+					<div class="userChatReview" id="chatroom">
+						<div class="userWriteTxt"><div id="feedback"></div></div>
+						<div class="userListPanel"></div>
+					</div>
+					<div class="chatTextarea" id="input_zone"> 
+						<input id="message" class="vertical-align" type="text" />
+						<button id="send_message" class="vertical-align" type="button">Send</button>
+				   </div>
+				</div>
+			</section>
+
+			<script type="text/javascript">
+				document.getElementById("userAgent").value = navigator.userAgent;
+				pageReady();
+			</script>
+
+			<!-- topic div -->
+			<div class="saleTableData">
+				<div class="row">
+					<div class="col-xs-12 col-md-12 topic-div-position" id="topic-div"></div>
+				</div>
+			</div>
+
+			<div class="col-md-12 threeBtnPanel">
+				<div class="row btnChatCol">
+					<div id="end-private-chat">
+						<a href="javascript:void(0);" id="end_private">
+							<div class="btnChat4">End Private Chat</div>
+						</a>
+					</div>
+					<div id="share-my-video">
+						<!-- onclick="shareMyVideo(this)" -->
+						<a href="javascript:void(0);">
+							<div class="btnChat3">Share My Video</div>
+						</a>
+					</div>
+					<div  id="performerOfferTipDiv">
+						<a href="javascript:void(0);" onclick="performerOfferTip();" >
+							<div class="btnChat4">Give Tip</div>
+						</a>
+					</div>
+				</div>
+			</div>
+
+			<div class="clearfix"></div>
+		</section>
+	</section>
+
+	<!-- Footer -->
+	<footer id="footer" class="container-fluid"> 
+		<section class="box special">
+		<p>
+			<font size="4"><a href="https://www.miricam.net/" target="_blank"><font color = "#ccc">Miricam.com</font></a></font>
+		</p>
+		</section>
+	</footer>
+</div>
+
+<!-- Scripts -->
+<script src="js/jquery-ui.min.js"></script>
+<script src="js/gijgo.min.js"></script>
+<script src="js/jquery.timepicker.min.js"></script>
+
+<script src="js/moment.min.js"></script>
+<script src="js/moment-timezone.min.js"></script>
+<script src="js/moment-timezone-with-data.min.js"></script>
+
+<script src="js/bootstrap/bootstrap.min.js"></script>
+<script src="js/jquery.validate.min.js"></script>
+<script src="js/additional/extension.js"></script>
+<script src="js/jquery.form.min.js"></script>
+<script src="js/loadingoverlay.min.js"></script>
+<script src="js/sweetalert.min.js"></script>
+<script src="js/skel.min.js"></script>
+<script src="js/util.js"></script>
+<script src="js/countdownTimer.js"></script>
+<script src="js/jquery.playSound.js"></script>
+
+<script type="text/javascript">
+	$(document).ready(function(){
+		//start();
+	});
+</script>
+
+<script src="js/socket.io.js"></script>
+<script src="js/private-chat.js"></script>
+<script src="js/main.js"></script>
+<script src="js/custom.js"></script>
+</body>
+</html>
